@@ -11,6 +11,7 @@ export default function LeadForm() {
     company: '',
     location: '',
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,6 +25,7 @@ export default function LeadForm() {
       await axios.post('/api/submit-lead', formData);
       alert('Lead submitted successfully!');
       setFormData({ name: '', email: '', phone: '', company: '', location: '' });
+      setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting lead:', error);
       alert('Error submitting lead. Please try again.');
@@ -55,27 +57,42 @@ export default function LeadForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
-        <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-      </div>
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-        <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-      </div>
-      <div>
-        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
-        <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-      </div>
-      <div>
-        <label htmlFor="company" className="block text-sm font-medium text-gray-700">Company</label>
-        <input type="text" id="company" name="company" value={formData.company} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-      </div>
-      <input type="hidden" name="location" value={formData.location} />
-      <button type="submit" className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-        Submit Lead
-      </button>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+          <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required className="p-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+        </div>
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required className="p-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+        </div>
+        <div>
+          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
+          <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} className="p-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+        </div>
+        <div>
+          <label htmlFor="company" className="block text-sm font-medium text-gray-700">Company</label>
+          <input type="text" id="company" name="company" value={formData.company} onChange={handleChange} className="p-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+        </div>
+        <input type="hidden" name="location" value={formData.location} />
+        <button type="submit" className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          Test Integration
+        </button>
+      </form>
+      {isSubmitted && (
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold mb-4">Submitted Data</h2>
+          <iframe 
+            className="airtable-embed" 
+            src="https://airtable.com/embed/appsP23ospnw5Q59a/shrxEAOQCDb3X5Eh8?layout=card&viewControls=on" 
+            frameBorder="0" 
+            width="100%" 
+            height="533" 
+            style={{ background: 'transparent', border: '1px solid #ccc' }}
+          ></iframe>
+        </div>
+      )}
+    </div>
   );
 }
